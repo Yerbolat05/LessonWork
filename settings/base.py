@@ -114,6 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 ADMIN_SITE_URLS = 'yerbo05/'
 
+
 LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'Asia/Almaty'
