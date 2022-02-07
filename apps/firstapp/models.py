@@ -1,7 +1,9 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
-
+from django.core.exceptions import (
+    ValidationError,
+)
 
 class Account(models.Model):
     ACCOUNT_FULL_NAME_MAX_LENGTH = 20
@@ -41,6 +43,7 @@ class Group(models.Model):
 
 
 class Student(models.Model):
+    MAX_AGE = 27
     account = models.OneToOneField(
         Account,
         on_delete = models.CASCADE,
@@ -60,6 +63,22 @@ class Student(models.Model):
     def __str__(self) -> str:
         return f'Имя : {self.account.full_name} - Возраст : {self.age} - {self.group} - Оценка : {self.gpa}'
     
+    def save(
+        self,
+        *args: tuple,
+        **kwargs: dict
+    ) -> None:
+        if self.age > self.MAX_AGE:
+            #v1
+        #     self.age = self.MAX_AGE
+        
+
+        #v2
+            raise ValidationError(
+                f'Допустимый возраст : {self.MAX_AGE}'
+            )
+        super().save(*args,**kwargs)
+        
     class Meta:
         ordering = (
             'account',

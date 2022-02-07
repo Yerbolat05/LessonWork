@@ -35,14 +35,51 @@ class StudentAdmin(admin.ModelAdmin):
 
     )
     MIN_STUDENTS_AGE = 16
+
+    def student_age_validation (
+        self,
+        obj: Optional[Student]
+    ) -> int:
+        if obj and obj.age <= self.MIN_STUDENTS_AGE:
+            return self.readonly_fields + ("age",)
+        return self.readonly_fields
+
+
+# #OLD
+#     def student_age_validation_2(
+#         self,
+#         obj: Student
+#     ) -> Optional[bool]:
+
+#         if obj and obj.age <= self.MIN_STUDENTS_AGE:
+#             return True
+#         return False
+
+#NEW
+    def student_age_validation_2(
+        self,
+        obj: Optional[Student]
+    ) -> bool:
+
+        if obj and obj.age <= self.MIN_STUDENTS_AGE:
+            return True
+        return False
+
+
     def get_readonly_fields(
         self,
         request: WSGIRequest,
-        obj: Optional[Account] = None
+        obj: Optional[Student] = None
     ) -> tuple:
-        if obj and obj.age < self.MIN_STUDENTS_AGE:
-            self.readonly_fields + ('age')
-        return self.readonly_fields
+        #v1 | student_age_validation
+        result: tuple = self.student_age_validation(obj)
+        return result
+
+        #v2 | student_age_validation_2
+        # if obj and result:
+        #     return self.readonly_fields + ('age',)
+        # return self.readonly_fields
+
 admin.site.register(Account,AccountAdmin)
 admin.site.register(Group,GroupAdmin)
 admin.site.register(Student,StudentAdmin)
