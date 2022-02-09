@@ -85,3 +85,60 @@ class Student(models.Model):
         )
         verbose_name = 'Студент'
         verbose_name_plural = 'Студенты'
+
+class Proffessor(models.Model):
+    FULL_NAME_MAX_LENGTH = 20
+
+    TOPIC_JAVA = 'Java'
+    TOPIC_PYTHON = 'python'
+    TOPIC_TYPESCRIPT = 'Typescript'
+    TOPIC_JAVASCRIPT = 'Javascript'
+    TOPIC_RUBY = 'Ruby'
+    TOPIC_GOLAND = 'Goland'
+    TOPIC_SQL = 'Sql'
+    TOPIC_SWIFT = 'swift'
+
+    TOPIC_CHOICES = (
+        {TOPIC_JAVA,'JAVA'},
+        {TOPIC_PYTHON,'Python'},
+        {TOPIC_TYPESCRIPT,'JavaScript'},
+        {TOPIC_RUBY,'TypeScript'},
+        {TOPIC_GOLAND,'Ruby'},
+        {TOPIC_SQL,'Golang'},
+        {TOPIC_SWIFT,'SQL'},
+        {TOPIC_SWIFT,'Swift'},
+    )
+    full_name = models.CharField(
+        verbose_name = 'полное имя',
+        max_length = FULL_NAME_MAX_LENGTH,
+    )
+    topic = models.CharField(
+        verbose_name = 'предмет',
+        choices = TOPIC_CHOICES,
+        default = TOPIC_JAVA,
+        max_length = FULL_NAME_MAX_LENGTH,
+    )
+    students = models.ManyToManyField(
+        Student
+    )
+
+    def __str__(self) -> str:
+        return f'Имя : {self.full_name}  -- Организация : {self.topic}'
+
+    def save(
+        self,
+        *args: tuple,
+        **kwargs:dict,
+    ) -> None:
+        if self.topic is None:
+            raise ValidationError(
+                f"Вы не выбрали свою организвцию"
+            )
+        super().save(*args,**kwargs)
+    
+    class Meta:
+        ordering = (
+            'full_name',
+        )
+        verbose_name = 'Проффессор'
+        verbose_name_plural = 'Проффессоры'

@@ -2,7 +2,7 @@ from typing import Optional
 from django.core.handlers.wsgi import WSGIRequest
 from django.contrib import admin
 
-from . models import Account, Group, Student
+from . models import Account, Group, Student, Proffessor
 
 from firstapp.models import (
     Account,
@@ -80,6 +80,11 @@ class StudentAdmin(admin.ModelAdmin):
         #     return self.readonly_fields + ('age',)
         # return self.readonly_fields
 
+class ProffessorAdmin(admin.ModelAdmin):
+    readonly_fields = (
+
+    )
 admin.site.register(Account,AccountAdmin)
 admin.site.register(Group,GroupAdmin)
 admin.site.register(Student,StudentAdmin)
+admin.site.register(Proffessor,ProffessorAdmin)
