@@ -5,7 +5,16 @@ from django.core.exceptions import (
     ValidationError,
 )
 
-class Account(models.Model):
+from abstracts.models import DateTimeCostum
+from django.db.models.query import QuerySet
+
+class AccountQuerySet(QuerySet):
+    def get_superuser(self) -> QuerySet:
+        return self.filter(
+            user__is_superuser = True
+        )
+
+class Account(DateTimeCostum):
     ACCOUNT_FULL_NAME_MAX_LENGTH = 20
     user = models.OneToOneField(
         User,
@@ -13,9 +22,12 @@ class Account(models.Model):
     )
     full_name = models.CharField(max_length = ACCOUNT_FULL_NAME_MAX_LENGTH,verbose_name = 'Аккаунт')
     description = models.TextField()
+    objects = AccountQuerySet().as_manager()
 
     def __str__(self):
         return f'Аккаунт : {self.user.id} / {self.full_name}'
+
+    
 
     class Meta:
         ordering = (
@@ -24,12 +36,23 @@ class Account(models.Model):
         verbose_name = 'Акакаунт'
         verbose_name_plural = 'Аккаунты'
 
-class Group(models.Model):
+
+# class GroupQuerySet(QuerySet):
+#     HIGH_GPA_LEVEL = 4.0
+#     def get_students_with_high_gpa(self) -> QuerySet:
+#         return self.filter(
+#             gpa__gt = self.HIGH_GPA_LEVEL
+#         )
+
+class Group(DateTimeCostum):
     GROUP_NAME_MAX_LENGTH = 10
     
     name = models.CharField(
         max_length = GROUP_NAME_MAX_LENGTH
-        )
+    )
+
+    # objects = GroupQuerySet().as_manager()
+
     def __str__(self) -> str:
         return f'Группа : {self.name}'
         
@@ -41,8 +64,14 @@ class Group(models.Model):
         verbose_name_plural = 'Группы'
 
 
+class StudentQuerySet(QuerySet):
+    ADULT_AGE = 18
+    def get_adult_students(self) -> QuerySet:
+        return self.filter(
+            age__gte=self.ADULT_AGE
+        )
 
-class Student(models.Model):
+class Student(DateTimeCostum):
     MAX_AGE = 27
     account = models.OneToOneField(
         Account,
@@ -60,6 +89,9 @@ class Student(models.Model):
     gpa = models.FloatField(
         'Средняя оценка'
     )
+
+    objects = StudentQuerySet().as_manager()
+
     def __str__(self) -> str:
         return f'Имя : {self.account.full_name} - Возраст : {self.age} - {self.group} - Оценка : {self.gpa}'
     
@@ -86,7 +118,8 @@ class Student(models.Model):
         verbose_name = 'Студент'
         verbose_name_plural = 'Студенты'
 
-class Proffessor(models.Model):
+
+class Proffessor(DateTimeCostum):
     FULL_NAME_MAX_LENGTH = 20
 
     TOPIC_JAVA = 'Java'

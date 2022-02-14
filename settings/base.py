@@ -44,6 +44,7 @@ DJANGO_APPS = [
 
 PROJECT_APPS = [
     'firstapp.apps.FirstappConfig',
+    'abstracts.apps.AbstractsConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS

@@ -18,7 +18,7 @@ from django.urls import path
 from django.conf import settings
 
 urlpatterns = [
-    path(settings.ADMIN_SITE_URLS, admin.site.urls),
+    path("aa/", admin.site.urls),
     # path('', include('firstapp.urls')),
     
 ]

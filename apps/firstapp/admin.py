@@ -27,12 +27,27 @@ class AccountAdmin(admin.ModelAdmin):
 
 class GroupAdmin(admin.ModelAdmin):
     readonly_fields = (
-
+        'datetime_created',
+        'datetime_updated',
+        'datetime_deleted',
     )
 
 class StudentAdmin(admin.ModelAdmin):
     readonly_fields = (
 
+    )
+    list_filter = (
+        'age',
+        'gpa',
+    )
+    search_fields = (
+        'account__full_name',
+    )
+    list_display = (
+        'group__name',
+        'account__full_name',
+        'gpa',
+        'age',
     )
     MIN_STUDENTS_AGE = 16
 
