@@ -25,6 +25,16 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+*.pyc
+*.pyo
+.idea
+pycache
+logs
+media
+static
+celerybeat.pid
+celerybeat-schedule
+db.sqlite3
 MANIFEST
 
 # PyInstaller
