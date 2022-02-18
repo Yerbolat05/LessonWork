@@ -43,12 +43,12 @@ class StudentAdmin(admin.ModelAdmin):
     search_fields = (
         'account__full_name',
     )
-    list_display = (
-        'group__name',
-        'account__full_name',
-        'gpa',
-        'age',
-    )
+    # list_display = (
+    #     'group__name',
+    #     'account__full_name',
+    #     'gpa',
+    #     'age',
+    # )
     MIN_STUDENTS_AGE = 16
 
     def student_age_validation (
