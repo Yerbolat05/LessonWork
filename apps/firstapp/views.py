@@ -51,7 +51,7 @@ def show_admin(request: WSGIRequest) -> HttpResponse:
 def admin_show(request: WSGIRequest) -> HttpResponse:
     return render(
         request,
-        'admin.html',
+        'firstapp/admin.html',
         context={"users":User.objects.all()}
     )
 

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
-    <link rel="stylesheet" href="./static/css/style.css">
+    <link rel="stylesheet" href="./static/firstapp/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap" rel="stylesheet">
@@ -18,9 +18,9 @@
             {% for user in users %}
 
                 <div class="user__info">
-                    <h1>USER</h1>
+                    <h1>Студенты</h1>
                     <div class="info">
-                        <span id="user_name">{{user.first_name}} {{user.last_name}}</span><br> Login: {{user.username}} <br> Role: <span id="role">{% if user.is_superuser %}Admin{% else %}User{% endif %}</span>
+                        <span>ФИО : </span><span id="user_name">{{user.first_name}} {{user.last_name}}</span><br> Логин : {{user.username}} <br> Роль: <span id="role">{% if user.is_superuser %}Admin{% else %}User{% endif %}</span><br><span class="id_num">ID : {{user.id}}</span>
                     </div>
                     <button class="edit" onclick="location.href = 'show'">Show</button>
                     <button class="delete">Delete</button>
@@ -30,6 +30,6 @@
         </div>
     </main>
 
-    <script src="static/js/app.js"></script>
+    <script src="static/firstapp/js/app.js"></script>
 </body>
 </html>
