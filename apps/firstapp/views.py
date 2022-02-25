@@ -43,15 +43,29 @@ def index_3(request: WSGIRequest) -> HttpResponse:
         'index.html',
         context
     )
-def show_admin(request: WSGIRequest) -> HttpResponse:
+def show_admin(request: WSGIRequest, username : str) -> HttpResponse:
+    user: User = User.objects.get(
+        username = username
+    )
+    context: dict = {
+        'ctx_user' : user,
+    }
     return render(
         request,
-        'show.html',
+        'firstapp/show.html',
+        context
     )
 def admin_show(request: WSGIRequest) -> HttpResponse:
     return render(
         request,
         'firstapp/admin.html',
         context={"users":User.objects.all()}
+    )
+def delete(request: WSGIRequest, username : str) -> HttpResponse:
+    user: User = user.objects.get(
+        user_id = user_id
+    )
+    return render(
+        request,
     )
 
