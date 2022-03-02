@@ -1,6 +1,6 @@
 from django.db import models
 
-class DateTimeCostum(models.Model):
+class AbstractDateTime(models.Model):
     datetime_created = models.DateTimeField(
         verbose_name = 'время создание',
         auto_now_add = True

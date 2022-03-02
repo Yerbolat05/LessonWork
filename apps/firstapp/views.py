@@ -43,9 +43,9 @@ def index_3(request: WSGIRequest) -> HttpResponse:
         'index.html',
         context
     )
-def show_admin(request: WSGIRequest, username : str) -> HttpResponse:
+def show_admin(request: WSGIRequest, user_id : int) -> HttpResponse:
     user: User = User.objects.get(
-        username = username
+        id = user_id
     )
     context: dict = {
         'ctx_user' : user,

@@ -11,10 +11,15 @@ urlpatterns = [
         '',
         views.admin_show,
         name = 'page_main'),
-    re_path(
-        r'^show/(?P<username>\w+)/$',
+    # re_path(
+    #     r'^show/(?P<username>\w+)/$',
+    #     views.show_admin,
+    #     name = 'page_show'),
+    path(
+        'show/<str:user_id>/',
         views.show_admin,
-        name = 'page_show'),
+        name='page_show',
+    ),
     path(
         'delete/',
         views.delete,

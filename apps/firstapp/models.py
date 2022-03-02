@@ -5,7 +5,9 @@ from django.core.exceptions import (
     ValidationError,
 )
 
-from abstracts.models import DateTimeCostum
+from abstracts.models import (
+    AbstractDateTime,
+)
 from django.db.models.query import QuerySet
 
 class AccountQuerySet(QuerySet):
@@ -14,7 +16,7 @@ class AccountQuerySet(QuerySet):
             user__is_superuser = True
         )
 
-class Account(DateTimeCostum):
+class Account(AbstractDateTime):
     ACCOUNT_FULL_NAME_MAX_LENGTH = 20
     user = models.OneToOneField(
         User,
@@ -44,7 +46,7 @@ class Account(DateTimeCostum):
 #             gpa__gt = self.HIGH_GPA_LEVEL
 #         )
 
-class Group(DateTimeCostum):
+class Group(AbstractDateTime):
     GROUP_NAME_MAX_LENGTH = 10
     
     name = models.CharField(
@@ -71,7 +73,7 @@ class StudentQuerySet(QuerySet):
             age__gte=self.ADULT_AGE
         )
 
-class Student(DateTimeCostum):
+class Student(AbstractDateTime):
     MAX_AGE = 27
     account = models.OneToOneField(
         Account,
@@ -119,7 +121,7 @@ class Student(DateTimeCostum):
         verbose_name_plural = 'Студенты'
 
 
-class Proffessor(DateTimeCostum):
+class Proffessor(AbstractDateTime):
     FULL_NAME_MAX_LENGTH = 20
 
     TOPIC_JAVA = 'Java'

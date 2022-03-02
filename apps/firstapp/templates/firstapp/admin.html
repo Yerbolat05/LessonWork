@@ -22,10 +22,8 @@
                     <div class="info">
                         <span>ФИО : </span><span id="user_name">{{user.first_name}} {{user.last_name}}</span><br> Логин : {{user.username}} <br> Роль: <span id="role">{% if user.is_superuser %}Admin{% else %}User{% endif %}</span><br><span class="id_num">ID : {{user.id}}</span>
                     </div>
-                    <a class="edit" href="{% url 'page_show' user.username %}" role="button">Профиль</a>
-                   
-                    <!-- <button class="edit" onclick="location.href = 'show'">Show</button>
-                    <button class="delete">Delete</button> -->
+                    <a class="edit" href="{% url 'page_show' user.id %}" role="button">Профиль</a>
+                    <a class="delete"  role="button">Удалить</a>
                 </div>
 
             {% endfor %}

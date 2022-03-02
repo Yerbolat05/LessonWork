@@ -1,7 +1,6 @@
 import os
 import sys
-from settings.conf import *
-
+from . import get_env_variable 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -10,6 +9,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = get_env_variable("SECRET_KEY")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -37,7 +38,6 @@ DJANGO_APPS = [
 PROJECT_APPS = [
     'firstapp.apps.FirstappConfig',
     'abstracts.apps.AbstractsConfig',
-    'auth.apps.AuthConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
@@ -156,6 +156,6 @@ SHELL_PLUS_MODEL_ALIASES = {
         'Professor': 'P', 
     }, 
 } 
-SHELL_PLUS = 'Ipython' 
+SHELL_PLUS = 'ipython' 
 SHELL_PLUS_PRINT_SQL = True 
 SHELL_PLUS_PRINT_SQL_TRUNCATE = 1000
