@@ -37,7 +37,7 @@ DJANGO_APPS = [
 PROJECT_APPS = [
     'firstapp.apps.FirstappConfig',
     'abstracts.apps.AbstractsConfig',
-    'auth.apps.AuthConfig',
+    'auths.apps.AuthsConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
@@ -52,6 +52,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+AUTH_USER_MODEL = 'auths.CustomUser'
 
 ROOT_URLCONF = 'urls.urls'
 

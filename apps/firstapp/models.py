@@ -9,6 +9,7 @@ from abstracts.models import (
     AbstractDateTime,
 )
 from django.db.models.query import QuerySet
+from auths.models import CustomUser
 
 class AccountQuerySet(QuerySet):
     def get_superuser(self) -> QuerySet:
@@ -19,7 +20,7 @@ class AccountQuerySet(QuerySet):
 class Account(AbstractDateTime):
     ACCOUNT_FULL_NAME_MAX_LENGTH = 20
     user = models.OneToOneField(
-        User,
+        CustomUser,
         on_delete = models.CASCADE  
     )
     full_name = models.CharField(max_length = ACCOUNT_FULL_NAME_MAX_LENGTH,verbose_name = 'Аккаунт')

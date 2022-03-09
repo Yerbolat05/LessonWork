@@ -33,13 +33,7 @@ class CustomUserManager(BaseUserManager):
         password: str,
         **kwargs: dict
     ) -> 'CustomUser':
-        kwargs.setdefault('is_staff', True)
-        kwargs.setdefault('is_root', True)
-
-        if kwargs.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True')
-        if kwargs.get('is_root') is not True:
-            raise ValueError('Superuser must have is_root=True')
+        is_staff = True
 
         return self.create_user(
             email,
@@ -47,31 +41,31 @@ class CustomUserManager(BaseUserManager):
             **kwargs
         )
 
-        def __str__(self):
-            return f'Пользователь : {self.email}'
+    #     def __str__(self):
+    #         return f'Пользователь : {self.email}'
 
-        def save(self,*args,**kwargs) -> None:
-            if(self.email != self.email.lower()):
-                raise ValidationError(
-                    'Ваш email "{self.email}" должен быть в нижнем регистре',
-                    code = 'lower_case_email_error',
-                    params = {'email': self.email}
-                )
-            super().save(*args,**kwargs)
+    #     def save(self,*args,**kwargs) -> None:
+    #         if(self.email != self.email.lower()):
+    #             raise ValidationError(
+    #                 'Ваш email "{self.email}" должен быть в нижнем регистре',
+    #                 code = 'lower_case_email_error',
+    #                 params = {'email': self.email}
+    #             )
+    #         super().save(*args,**kwargs)
             
-    class Meta:
-        ordering = (
-            'email'
-        )
-        verbose_name = 'Электронная почта'
-        verbose_name_plural = 'Электронные почты'
+    # class Meta:
+    #     ordering = (
+    #         'email'
+    #     )
+    #     verbose_name = 'Электронная почта'
+    #     verbose_name_plural = 'Электронные почты'
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         'Почта/Логин', unique=True
     )
-    is_root = models.BooleanField(default=False)
-    is_stuff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     datetime_joined = models.DateTimeField(
         verbose_name = 'время регестрации',
         auto_now_add=True,
@@ -80,6 +74,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
+
+    class Meta:
+        ordering = (
+            'datetime_joined',
+        )
+        verbose_name = 'Польователь'
+        verbose_name_plural = 'Пользователи'
 
     
 
