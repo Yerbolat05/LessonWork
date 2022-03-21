@@ -1,0 +1,209 @@
+from multiprocessing import context
+from warnings import filters
+from django.db.models import QuerySet
+from django.core.handlers.wsgi import WSGIRequest
+from django.shortcuts import render
+from django.http import HttpResponse
+from auths.forms import CustomUserForm
+from django.views import View
+from django.contrib.auth import (
+    authenticate as dj_authenticate,
+    login as dj_login,
+    logout as dj_logout,
+)
+
+
+from auths.models import CustomUser
+
+from .models import (
+    Account,
+    Homework,
+    File,
+    Student,
+)
+
+class IndexView(View):
+
+    template_name = 'firstapp/login.html'
+    queryset = Homework.objects.get_not_deleted()
+
+    def get(
+        self,
+        request: WSGIRequest,
+        *args: tuple,
+        **kwargs
+    ): 
+        return HttpResponse('Hello, World!')
+           
+
+def index(request: WSGIRequest) -> HttpResponse:
+
+    if not request.user.is_authenticated:
+        return render(
+            request,
+            'firstapp/login.html'
+        )
+
+    homeworks: QuerySet = Homework.objects.filter(
+        user = request.user
+    )
+    
+    context: dict = {
+        'ctx_title' : 'Главная страница',
+        'ctx_homeworks' : homeworks,
+    }
+    return render(
+        request,
+        template_name = 'firstapp/index.html',
+        context = context
+    )
+
+
+def index_2(request: WSGIRequest) -> HttpResponse:
+    """Start Page"""
+    return HttpResponse(
+        '<h1>Страница : Стартовая</h1>'
+    )
+
+
+def index_3(request: WSGIRequest) -> HttpResponse:
+
+    users: QuerySet = CustomUser.objects.all()
+    context: dict = {
+        'ctx_title': 'Главная страница',
+        'users': users,
+    }
+    return render(
+        request,
+        'firstapp/index.html',
+        context
+    )
+
+
+def show_admin(request: WSGIRequest, user_id : int) -> HttpResponse:
+    user: CustomUser = CustomUser.objects.get(
+        id = user_id
+    )
+    context: dict = {
+        'ctx_user' : user,
+    }
+    return render(
+        request,
+        'firstapp/show.html',
+        context
+    )
+
+
+def admin_show(request: WSGIRequest) -> HttpResponse:
+    return render(
+        request,
+        'firstapp/admin.html',
+        context={"users": CustomUser.objects.all()}
+    )
+
+
+def delete(request: WSGIRequest, username : str) -> HttpResponse:
+    user: CustomUser = CustomUser.objects.get(
+        user_id = user_id
+    )
+    return render(
+        request,
+    )
+
+
+def register(request: WSGIRequest) -> HttpResponse:
+
+    form: CustomUserForm = CustomUserForm(
+        request.POST
+    )
+    if form.is_valid():
+        user: CustomUser = form.save(
+            commit=False
+        )
+        email: str = form.cleaned_data['email']
+        password: str = form.cleaned_data['password']
+        user.email = email
+        user.set_password(password)
+        user.save()
+
+        user: CustomUser = dj_authenticate(
+            email=email,
+            password=password
+        )
+        if user and user.is_active:
+
+            dj_login(request, user)
+
+            homeworks: QuerySet = Homework.objects.filter(
+                user=request.user
+            )
+            return render(
+                request,
+                'firstapp/index.html',
+                {'homeworks': homeworks}
+            )
+    context: dict = {
+        'form': form
+    }
+    return render(
+        request,
+        'firstapp/register.html',
+        context
+    )
+
+
+def login(request: WSGIRequest) -> HttpResponse:
+
+    if request.method == 'POST':
+        email: str = request.POST['email']
+        password: str = request.POST['password']
+
+        user: CustomUser = dj_authenticate(
+            email=email,
+            password=password
+        )
+        # Guard Clause
+        #
+        if not user:
+            return render(
+                request,
+                'firstapp/login.html',
+                {'error_message': 'Неверные данные'}
+            )
+        if not user.is_active:
+            return render(
+                request,
+                'firstapp/login.html',
+                {'error_message': 'Ваш аккаунт был удален'}
+            )
+        dj_login(request, user)
+
+        homeworks: QuerySet = Homework.objects.filter(
+            user=request.user
+        )
+        return render(
+            request,
+            'firstapp/index.html',
+            {'homeworks': homeworks}
+        )
+    return render(
+        request,
+        'firstapp/login.html'
+    )
+
+
+def logout(request: WSGIRequest) -> HttpResponse:
+
+    dj_logout(request)
+
+    form: CustomUserForm = CustomUserForm(
+        request.POST
+    )
+    context: dict = {
+        'form': form,
+    }
+    return render(
+        request,
+        'firstapp/login.html',
+        context
+    )

@@ -1,0 +1,4 @@
+# Django related stuff
+#
+Django==3.0
+names==3.0
