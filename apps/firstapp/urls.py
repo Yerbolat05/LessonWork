@@ -7,6 +7,8 @@ from django.conf.urls.static import static
 from . import views
 from firstapp.views import(
     IndexView,
+    LoginView,
+    RegisterView,
 )
 
 
@@ -32,12 +34,12 @@ urlpatterns = [
     ),
     path(
         'register/',
-        views.register,
+        RegisterView.as_view(),
         name = 'page_register'
     ),
     path(
         'login/',
-        views.login,
+        views.LoginView.as_view(),
         name = 'page_login'
     ),
     path(
